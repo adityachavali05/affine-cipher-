@@ -2,11 +2,12 @@
 #include <string>
 using namespace std;
 
-// Include functions manually (since no headers used)
+// ---------- GCD ----------
 int gcd(int a, int b) {
     return (b == 0) ? a : gcd(b, a % b);
 }
 
+// ---------- Modular Inverse ----------
 int modInverse(int a) {
     a %= 26;
     for (int x = 1; x < 26; x++) {
@@ -16,6 +17,7 @@ int modInverse(int a) {
     return -1;
 }
 
+// ---------- Encrypt ----------
 string encrypt(string text, int a, int b) {
     string result = "";
     for (char c : text) {
@@ -29,6 +31,7 @@ string encrypt(string text, int a, int b) {
     return result;
 }
 
+// ---------- Decrypt ----------
 string decrypt(string cipher, int a, int b) {
     string result = "";
     int a_inv = modInverse(a);
@@ -45,7 +48,7 @@ string decrypt(string cipher, int a, int b) {
     return result;
 }
 
-// Hash function
+// ---------- Hash Function ----------
 long long computeHash(string s) {
     const int p = 31;
     const int mod = 1e9 + 9;
@@ -58,23 +61,55 @@ long long computeHash(string s) {
     return hash;
 }
 
+// ---------- MAIN ----------
 int main() {
-    string text = "HELLO";
-    int a = 5, b = 8;
+    int t;
+    cout << "Enter number of test cases: ";
+    cin >> t;
+    cin.ignore();
 
-    if (gcd(a, 26) != 1) {
-        cout << "Invalid key\n";
-        return 0;
+    while (t--) {
+        string text;
+        int a, b;
+
+        cout << "\nEnter plaintext: ";
+        getline(cin, text);
+
+        cout << "Enter key a: ";
+        cin >> a;
+
+        if (gcd(a, 26) != 1) {
+            cout << "Invalid key 'a'\n";
+            return 0;
+        }
+
+        cout << "Enter key b: ";
+        cin >> b;
+        cin.ignore();
+
+        // Step 1: Encrypt
+        string cipher = encrypt(text, a, b);
+
+        // Step 2: Hash ciphertext
+        long long hash1 = computeHash(cipher);
+
+        // Step 3: Decrypt
+        string decrypted = decrypt(cipher, a, b);
+
+        // Step 4: Re-hash (verification)
+        long long hash2 = computeHash(cipher);
+
+        // Output
+        cout << "\n--- RESULT ---\n";
+        cout << "Ciphertext: " << cipher << endl;
+        cout << "Hash: " << hash1 << endl;
+        cout << "Decrypted: " << decrypted << endl;
+
+        if (hash1 == hash2)
+            cout << "Integrity Check: PASSED\n";
+        else
+            cout << "Integrity Check: FAILED\n";
     }
-
-    string cipher = encrypt(text, a, b);
-    long long hash = computeHash(cipher);
-    string decrypted = decrypt(cipher, a, b);
-
-    cout << "Plaintext: " << text << endl;
-    cout << "Encrypted: " << cipher << endl;
-    cout << "Hash: " << hash << endl;
-    cout << "Decrypted: " << decrypted << endl;
 
     return 0;
 }
