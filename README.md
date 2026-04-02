@@ -1,13 +1,59 @@
-## Affine Cipher in C++
+## Deliverables (to be pushed to GitHub):
 
-The Affine Cipher is a classical encryption technique used in cryptography that applies a mathematical transformation to each letter in a message. It is a type of substitution cipher where each character in the plaintext is mapped to a corresponding character in the ciphertext using a linear function. This project implements the Affine Cipher in C++, supporting both encryption and decryption of text.
+1. Source code for the assigned cipher (encryption + decryption)  
+   The Affine Cipher is implemented in C++ with support for both encryption and decryption.
 
-The working of the Affine Cipher is based on two mathematical formulas. For encryption, each letter is converted into its numerical equivalent (where A = 0, B = 1, ..., Z = 25), and then transformed using the formula ( E(x) = (a \cdot x + b) \mod 26 ). For decryption, the reverse transformation is applied using the formula ( D(x) = a^{-1} \cdot (x - b) \mod 26 ), where ( a^{-1} ) is the modular inverse of ( a ) under modulo 26. These operations ensure that the original message can be recovered from the encrypted text.
+2. Source code for a hashing function   
+   A Polynomial Rolling Hash function is implemented from scratch. This hash function is efficient and commonly used in string processing. It was chosen because it demonstrates modular arithmetic and avoids collisions reasonably well for small inputs.
 
-A key requirement of the Affine Cipher is that the value of ( a ) must be coprime with 26. This condition is necessary to ensure that a modular inverse exists for ( a ), which is required during the decryption process. If this condition is not satisfied, the cipher becomes invalid because the original message cannot be retrieved correctly.
+3. A README.md that includes:
 
-The implemented program includes several important components. A function to compute the greatest common divisor (GCD) is used to verify whether the chosen value of ( a ) is valid. Another function calculates the modular inverse of ( a ), which is essential for decrypting the ciphertext. The encryption function processes each character of the input text, applies the affine transformation, and produces the encrypted output. Similarly, the decryption function reverses this transformation to recover the original plaintext.
+   - Brief theory behind the cipher and the hash  
+     The Affine Cipher is a substitution cipher that encrypts characters using the formula:
+     E(x) = (a * x + b) mod 26  
+     Decryption is done using:
+     D(x) = a⁻¹ * (x - b) mod 26  
+     where a⁻¹ is the modular inverse of a. The value of 'a' must be coprime with 26.
 
-This implementation is designed to handle both uppercase and lowercase letters while preserving non-alphabetic characters such as spaces and punctuation. This ensures that the structure and readability of the original text are maintained even after encryption and decryption.
+     The hashing function used is a Polynomial Rolling Hash:
+     Hash(s) = Σ (s[i] * p^i) mod m  
+     where p is a constant base and m is a large prime.
 
-Although the Affine Cipher demonstrates important concepts in modular arithmetic and classical cryptography, it is not considered secure by modern standards. It is vulnerable to various cryptanalysis techniques and should only be used for educational purposes. Nevertheless, it serves as a useful introduction to the mathematical foundations of encryption algorithms.
+   - Instructions to run the code  
+     Compile using:
+     g++ test.cpp -o test  
+     Run using:
+     ./test  
+
+   - At least 2 worked examples  
+
+     Example 1:  
+     Plaintext: HELLO  
+     Key: a = 5, b = 8  
+     Ciphertext: RCLLA  
+     Hash Output: (varies, e.g. 742... depending on run)  
+
+     Example 2:  
+     Plaintext: WORLD  
+     Key: a = 7, b = 3  
+     Ciphertext: ZRUOG  
+     Hash Output: (computed value)  
+
+4. A test script demonstrating encrypt → hash → decrypt round-trip  
+   The test.cpp file demonstrates the full pipeline:
+   plaintext → encryption → hashing → decryption → original plaintext recovery.
+
+---
+
+## Constraints:
+
+- Language: C++  
+- No cryptography libraries used  
+- All implementations are from scratch  
+- Hash function is unique and explained  
+
+---
+
+## Note
+
+This project is for educational purposes only. The Affine Cipher is not secure for modern cryptographic use.
